@@ -1,3 +1,4 @@
+//package out;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,16 +48,23 @@ public class PlayLevel {
 	    level = args[0];
 	    }
 
-	String[] level_filename = level.split("/",0);
-	String out_filename = level_filename[level_filename.length-1].split(".txt",0)[0]+"_coords.txt";
-	System.out.println(out_filename);
+	//String[] level_filename = level.split("/",0);
+	//String out_filename = level_filename[level_filename.length-1].split(".txt",0)[0]+"_coords.txt";
+	
 	MarioGame game = new MarioGame();  //.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true); 
 
-	MarioResult result = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true);
-	printResults(result);
-	writeCoordsToFile(result.agentCoords, out_filename);
+	MarioResult result = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, false);
+	printCoords(result.agentCoords);	
+	//printResults(result);
+	//writeCoordsToFile(result.agentCoords, out_filename);
     }
 
+    public static void printCoords(ArrayList<Point2D> agentCoords) {
+      for (int i = 0; i < agentCoords.size();i++){ 		      
+	  System.out.println(agentCoords.get(i).getX() + " , " +  agentCoords.get(i).getY()); 		
+      }
+    }
+    
     public static void writeCoordsToFile(ArrayList<Point2D> agentCoords,String filename) {
       try {
       FileWriter writer = new FileWriter(filename);

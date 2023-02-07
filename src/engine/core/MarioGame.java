@@ -249,9 +249,6 @@ public class MarioGame {
         }
 
 
-	System.out.println("World width: " + MarioGame.width );
-	System.out.println("World height: " + MarioGame.height);
-
 	MarioTimer agentTimer = new MarioTimer(MarioGame.maxTime);
         this.agent.initialize(new MarioForwardModel(this.world.clone()), agentTimer);
 
