@@ -41,7 +41,7 @@ public class PlayLevel {
     }
 
     public static void main(String[] args) {
-	String level = "./original/Levels/lvl-1.txt";
+	String level = "./levels/original/lvl-1.txt";
 	
 	if (args.length > 0){
 	    level = args[0];
@@ -50,9 +50,10 @@ public class PlayLevel {
 	String[] level_filename = level.split("/",0);
 	String out_filename = level_filename[level_filename.length-1].split(".txt",0)[0]+"_coords.txt";
 	System.out.println(out_filename);
-	MarioResult result = new MarioGame().runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true); 
+	MarioGame game = new MarioGame();  //.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true); 
 
-        printResults(result);
+	MarioResult result = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true);
+	printResults(result);
 	writeCoordsToFile(result.agentCoords, out_filename);
     }
 
