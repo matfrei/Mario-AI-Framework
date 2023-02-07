@@ -11,6 +11,10 @@ import agents.human.Agent;
 import engine.helper.GameStatus;
 import engine.helper.MarioActions;
 
+import java.util.Arrays;
+
+import java.awt.geom.Point2D;
+
 public class MarioGame {
     /**
      * the maximum time that agent takes for each step
@@ -228,6 +232,9 @@ public class MarioGame {
         this.world.mario.isLarge = marioState > 0;
         this.world.mario.isFire = marioState > 1;
         this.world.update(new boolean[MarioActions.numberOfActions()]);
+
+	
+	
         long currentTime = System.currentTimeMillis();
 
         //initialize graphics
@@ -241,22 +248,36 @@ public class MarioGame {
             this.render.addFocusListener(this.render);
         }
 
-        MarioTimer agentTimer = new MarioTimer(MarioGame.maxTime);
+
+	System.out.println("World width: " + MarioGame.width );
+	System.out.println("World height: " + MarioGame.height);
+
+	MarioTimer agentTimer = new MarioTimer(MarioGame.maxTime);
         this.agent.initialize(new MarioForwardModel(this.world.clone()), agentTimer);
 
         ArrayList<MarioEvent> gameEvents = new ArrayList<>();
         ArrayList<MarioAgentEvent> agentEvents = new ArrayList<>();
+	ArrayList<Point2D> agentCoords = new ArrayList<Point2D>();
+	
         while (this.world.gameStatus == GameStatus.RUNNING) {
             if (!this.pause) {
                 //get actions
                 agentTimer = new MarioTimer(MarioGame.maxTime);
                 boolean[] actions = this.agent.getActions(new MarioForwardModel(this.world.clone()), agentTimer);
+		//for (boolean value : actions) {
+		//    System.out.println("Value = " + value);
+		//}
+		//System.out.println(actions);
                 if (MarioGame.verbose) {
                     if (agentTimer.getRemainingTime() < 0 && Math.abs(agentTimer.getRemainingTime()) > MarioGame.graceTime) {
                         System.out.println("The Agent is slowing down the game by: "
                                 + Math.abs(agentTimer.getRemainingTime()) + " msec.");
                     }
                 }
+		
+		//System.out.println("Agent X: " + this.world.mario.x);
+		//System.out.println("Agent Y:" +  this.world.mario.y);
+		agentCoords.add(new Point2D.Double(this.world.mario.x, this.world.mario.y));
                 // update world
                 this.world.update(actions);
                 gameEvents.addAll(this.world.lastFrameEvents);
@@ -265,6 +286,10 @@ public class MarioGame {
                         this.world.mario.onGround, this.world.currentTick));
             }
 
+	    
+	    // Note: can we just pass any other image object to the render world function to create
+	    // a series of images that can be stitched to a path?
+	    
             //render world
             if (visual) {
                 this.render.renderWorld(this.world, renderTarget, backBuffer, currentBuffer);
@@ -279,6 +304,6 @@ public class MarioGame {
                 }
             }
         }
-        return new MarioResult(this.world, gameEvents, agentEvents);
+        return new MarioResult(this.world, gameEvents, agentEvents, agentCoords);
     }
 }
