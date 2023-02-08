@@ -13,21 +13,26 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 
-
 public class PlayLevel {
     public static void printResults(MarioResult result) {
         System.out.println("****************************************************************");
-        System.out.println("Game Status: " + result.getGameStatus().toString() +
-                " Percentage Completion: " + result.getCompletionPercentage());
-        System.out.println("Lives: " + result.getCurrentLives() + " Coins: " + result.getCurrentCoins() +
-                " Remaining Time: " + (int) Math.ceil(result.getRemainingTime() / 1000f));
-        System.out.println("Mario State: " + result.getMarioMode() +
-                " (Mushrooms: " + result.getNumCollectedMushrooms() + " Fire Flowers: " + result.getNumCollectedFireflower() + ")");
-        System.out.println("Total Kills: " + result.getKillsTotal() + " (Stomps: " + result.getKillsByStomp() +
-                " Fireballs: " + result.getKillsByFire() + " Shells: " + result.getKillsByShell() +
-                " Falls: " + result.getKillsByFall() + ")");
-        System.out.println("Bricks: " + result.getNumDestroyedBricks() + " Jumps: " + result.getNumJumps() +
-                " Max X Jump: " + result.getMaxXJump() + " Max Air Time: " + result.getMaxJumpAirTime());
+        System.out.println("Game Status: " + result.getGameStatus().toString());
+        System.out.println("Percentage Completion: " + result.getCompletionPercentage());
+        System.out.println("Lives: " + result.getCurrentLives());
+	System.out.println("Coins: " + result.getCurrentCoins()); 
+        System.out.println("Remaining Time: " + (int) Math.ceil(result.getRemainingTime() / 1000f));
+        System.out.println("Mario State: " + result.getMarioMode());
+        System.out.println("Mushrooms collected: " + result.getNumCollectedMushrooms());
+	System.out.println("Fire Flowers collected: " + result.getNumCollectedFireflower());
+        System.out.println("Total Kills: " + result.getKillsTotal());
+	System.out.println("Kills by Stomps: " + result.getKillsByStomp());
+	System.out.println("Kills by Fireballs: " + result.getKillsByFire());
+	System.out.println("Kills by Shells: " + result.getKillsByShell());
+	System.out.println("Kills by Falls: " + result.getKillsByFall());
+	System.out.println("Bricks: " + result.getNumDestroyedBricks());
+	System.out.println("Jumps: " + result.getNumJumps());
+	System.out.println("Max X Jump: " + result.getMaxXJump());
+	System.out.println("Max Air Time: " + result.getMaxJumpAirTime());
         System.out.println("****************************************************************");
 	
     }
@@ -54,6 +59,7 @@ public class PlayLevel {
 	MarioGame game = new MarioGame();  //.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true); 
 
 	MarioResult result = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, false);
+	printResults(result);
 	printCoords(result.agentCoords);	
 	//printResults(result);
 	//writeCoordsToFile(result.agentCoords, out_filename);
