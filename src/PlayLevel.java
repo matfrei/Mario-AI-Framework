@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 import engine.core.MarioGame;
 import engine.core.MarioResult;
+import engine.core.MarioAgent;
 
 import java.io.FileWriter;   // Import the FileWriter class
 import java.io.IOException;  // Import the IOException class to handle errors
@@ -34,7 +35,6 @@ public class PlayLevel {
 	System.out.println("Max X Jump: " + result.getMaxXJump());
 	System.out.println("Max Air Time: " + result.getMaxJumpAirTime());
         System.out.println("****************************************************************");
-	
     }
 
     public static String getLevel(String filepath) {
@@ -47,21 +47,25 @@ public class PlayLevel {
     }
 
     public static void main(String[] args) {
+	
 	String level = "./levels/original/lvl-1.txt";
+	String  agent = "astar";
 	
 	if (args.length > 0){
 	    level = args[0];
 	    }
 
+	if (args.length > 1){
+	    agent = args[1];
+	    }
+
 	//String[] level_filename = level.split("/",0);
 	//String out_filename = level_filename[level_filename.length-1].split(".txt",0)[0]+"_coords.txt";
 	
-	MarioGame game = new MarioGame();  //.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, true); 
-
-	MarioResult result = game.runGame(new agents.robinBaumgarten.Agent(), getLevel(level), 20, 0, false);
+	MarioGame game = new MarioGame(); 
+	MarioResult result = game.runGame(getAgent(agent), getLevel(level), 20, 0, false);
 	printResults(result);
 	printCoords(result.agentCoords);	
-	//printResults(result);
 	//writeCoordsToFile(result.agentCoords, out_filename);
     }
 
@@ -84,6 +88,21 @@ public class PlayLevel {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
-  }
-    
+   }
+
+   public static MarioAgent getAgent(String agentname) {
+       MarioAgent agent;
+       switch (agentname) {
+            case "andysloane":  agent = new agents.andySloane.Agent();
+                     break;
+	    case "glennhartmann":  agent = new agents.glennHartmann.Agent();
+                     break;
+            case "robinbaumgarten": 
+            case "astar":
+            default: agent = new agents.robinBaumgarten.Agent();
+                     break;
+	     
+        }
+        return agent;
+    }
 }
