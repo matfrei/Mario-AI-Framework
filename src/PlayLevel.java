@@ -50,20 +50,32 @@ public class PlayLevel {
 	
 	String level = "./levels/original/lvl-1.txt";
 	String  agent = "astar";
+	boolean render = false;
 	
-	if (args.length > 0){
+	// FIXXXME: argument parsing is very hacky
+
+	 if (args.length > 0){
 	    level = args[0];
-	    }
+	 }
 
 	if (args.length > 1){
 	    agent = args[1];
+	 }
+	
+	if (args.length > 2){
+	    if (args[2].equals("render")){
+		render = true;
 	    }
+	    else {
+		render = false;
+	    }
+	 }
 
 	//String[] level_filename = level.split("/",0);
 	//String out_filename = level_filename[level_filename.length-1].split(".txt",0)[0]+"_coords.txt";
 	
 	MarioGame game = new MarioGame(); 
-	MarioResult result = game.runGame(getAgent(agent), getLevel(level), 20, 0, false);
+	MarioResult result = game.runGame(getAgent(agent), getLevel(level), 20, 0, render);
 	printResults(result);
 	printCoords(result.agentCoords);	
 	//writeCoordsToFile(result.agentCoords, out_filename);
@@ -103,6 +115,6 @@ public class PlayLevel {
                      break;
 	     
         }
-        return agent;
+       return agent;
     }
 }
